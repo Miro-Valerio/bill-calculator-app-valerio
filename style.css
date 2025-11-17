@@ -125,19 +125,33 @@ nav a:hover {
     justify-content: center;
     align-items: center;        
     gap: 30px;               
-}
+}                   
 
 .benefits-container img {
   display: block;
-  width: 320px;               
+  width: 330px;               
   height: auto;
   filter: drop-shadow( 15px 20px rgba(66, 66, 66, 0.308));
 }
-.benefit-card h3{
+
+.benefit-card h3 {
   font-size: 22px;
   color: #444;
   margin-bottom: 10px;
-}
+  position: absolute ; 
+  margin-top: -150px; 
+  margin-left: 60px;
+}  
+
+
+.benefit-card p {
+  position: absolute; 
+  margin-top: -110px; 
+  margin-left: 50px;
+  color: #646464;
+  text-align: justify;
+  font-size: 19px;
+}    
 
 /*3rd section */
 .advanced-section {

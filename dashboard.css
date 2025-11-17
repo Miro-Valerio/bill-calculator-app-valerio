@@ -110,38 +110,35 @@ html,body { height:100%;
     opacity:0.9; 
 }
 
-/* right side of hero */
+
 .hero-right { 
     flex:0 0 34%; 
-    padding:6px 12px; 
+    padding:6px 12px;
+    margin-top: -6rem;
+    font-size: 24px;
 }
 .usage-title { 
     color:#fff; 
-    font-weight:700; 
-    margin-bottom:8px; 
-    text-align:right;
- }
-.usage-chart { 
+    font-weight:700;
+    margin-bottom: -60px; 
+    margin-left: 600px;
+    margin-top: 2px;
     background:rgba(0,0,0,0.15);
-     border-radius:12px; 
-     padding:12px; 
-     display:flex; 
-     justify-content:center; 
-     align-items:center; 
-     min-height:110px; 
+    border-radius:12px; 
+    padding:12px; 
+    width: 25rem;
+    display:flex; 
+    min-height:200px;
     }
-.usage-chart img { 
-    width:100%;
-     height:auto;
-      max-height:110px; 
-      object-fit:contain;
-     }
 
 /* TIP CARD (overlapping) */
-.tip-area { margin-top:-10px; padding:0 10px; }
+.tip-area {
+ margin-top:-10px; 
+ padding:0 10px;
+  }
 .tip-card {
   width:320px;
-  background:#130f1b;
+  background:#5b5b5b;
   color:#fff;
   border-radius:10px;
   padding:14px;
@@ -173,10 +170,17 @@ html,body { height:100%;
  }
 
 /* BOTTOM PANELS */
-.bottom-panels { display:flex; gap:20px; padding:10px; align-items:flex-start; }
+.bottom-panels { 
+    display:flex; gap:20px; 
+    padding:10px; 
+    align-items:flex-start; 
+    margin-top: 3rem;
+}
 
 /* left panel - last calculation */
-.left-panel { flex:0 0 42%; }
+.left-panel { 
+    flex:0 0 42%; 
+}
 
 .last-calc {
   background: #5b5b5b;
@@ -185,9 +189,20 @@ html,body { height:100%;
   border-radius:10px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.2);
 }
-.lc-title { font-size:14px; opacity:0.9; margin-bottom:12px; }
-.lc-amount { font-size:28px; font-weight:800; margin-bottom:6px; }
-.lc-date { opacity:0.85; margin-bottom:16px; }
+.lc-title { 
+    font-size:14px; 
+    opacity:0.9;
+     margin-bottom:12px; 
+ }
+.lc-amount { 
+    font-size:28px;
+    font-weight:800;
+     margin-bottom:6px;
+      }
+.lc-date { 
+    opacity:0.85; 
+    margin-bottom:16px;
+     }
 
 .calc-btn {
   display:inline-block;
@@ -204,7 +219,8 @@ html,body { height:100%;
     background: linear-gradient(to right, #8A38F5, #51218F);
 }
 
-/* right panel - previous calculations */
+
+
 .right-panel { flex:1; }
 .previous { 
   background:#4b4b4b;
