@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WattWise — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li><a href="profile.html">👤 Profile</a></li>
+          <li class="active"><a href="dashboard.html">🔲 Dashboard</a></li>
+          <li><a href="calculator.html">🧮 Calculator</a></li>
+          <li><a href="history.html">⏳ History</a></li>
+          <li><a href="index.html">↪ Logout</a></li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-logo">
+        <!-- replace logo.png with your logo -->
+        <img src="logo.png" alt="WattWise logo">
+      </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <main class="main-area">
+      <!-- HEADER / HERO -->
+      <header class="hero">
+        <div class="hero-left">
+          <h1><span>Electricity Bill</span> <strong>Calculator</strong></h1>
+
+          <div class="avatar-row">
+            <div class="avatar">
+              <img src="profile.png" alt="avatar">
+            </div>
+            <div class="welcome">
+              <div class="welcome-title">Welcome back, <strong>Miro!</strong></div>
+              <div class="welcome-sub">start calculate your bill</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="usage-title">Usage Summary</div>
+          <div class="usage-chart">
+            <!-- replace chart-placeholder.png with your chart image or put a canvas later -->
+            <img src="chart-placeholder.png" alt="usage chart">
+          </div>
+        </div>
+      </header>
+
+      <!-- TIP card -->
+      <section class="tip-area">
+        <div class="tip-card">
+          <div class="lamp">💡</div>
+          <div class="tip-content">
+            <div class="tip-title">Tip</div>
+            <div class="tip-text">Unplug unused appliances to reduce standby power consumption.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM PANELS -->
+      <section class="bottom-panels">
+        <div class="left-panel">
+          <div class="last-calc">
+            <div class="lc-title">Your last calculation</div>
+            <div class="lc-amount">₱ 1,850.00</div>
+            <div class="lc-date">October (2025)</div>
+            <a href="calculator.html">
+            <button class="calc-btn">Calculate</button>
+            </a>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div class="previous">
+            <div class="prev-title">Previous Calculations</div>
+
+            <table class="prev-table" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Power Consumption (kWh)</th>
+                  <th>Cost per (kWh)</th>
+                  <th>Total Bill</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Oct</td>
+                  <td>185</td>
+                  <td>₱10</td>
+                  <td>₱1,850.00</td>
+                </tr>
+                <tr>
+                  <td>Sept</td>
+                  <td>180</td>
+                  <td>₱12.50</td>
+                  <td>₱2,250.00</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <a class="view-history" href="history.html">View History</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #c4c3c3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    overflow: hidden;
+}
+
+/* LEFT SIDE */
+.left {
+    width: 50%;
+    background: linear-gradient(to bottom right, #f1f1f1, #cfcfcf);
+    padding: 40px;
+}
+
+.left h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.left label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.left input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 18px;
+    border-radius: 6px;
+    border: 1px solid black;
+    font-size: 14px;
+}
+
+.forgot {
+    margin-top: 3px;
+    font-size: 13px;
+    text-decoration: none;
+    color: black;
+    margin-bottom: 10px;
+    display: block; 
+}
+
+.login-btn {
+    width: 70%;
+    padding: 10px 50px;
+    background: black;
+    color: white;
+    border: none;
+    font-size: 16px;
+    margin: 20px auto;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-left: 50px;
+}
+
+.login-btn:hover {
+    background: linear-gradient(180deg, #51218F, #8A38F5);
+}
+.divider {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #1e1e1e;
+}
+
+.divider span {
+    width: 60px;
+    height: 1px;
+    margin: 0 5px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* RIGHT SIDE */
+.right {
+    width: 50%;
+    background: linear-gradient(to bottom right, #8029dd, #51218F);
+    color: white;
+    text-align: center;
+    padding: 50px 30px;
+    position: relative;
+}
+
+.logo {
+    width: 150px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.right h2 {
+    font-size: 45px;
+    margin-top: 80px;
+    font-style: italic;
+    filter: drop-shadow( 20px -15px rgba(66, 66, 66, 0.308));
+}
+
+.welcome {
+    font-size: 45px;
+    font-weight: 700;
+    font-style: italic;
+    filter: drop-shadow( 20px -15px rgba(66, 66, 66, 0.308));
+}
+
+.signup-btn {
+    margin-top: 20px;
+    padding: 8px 50px;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.signup-btn:hover {
+    background: black;
+    color: #ffffff;
+    border: 2px solid black;
+}
