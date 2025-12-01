@@ -1,30 +1,37 @@
-body {
+/* FULL SCREEN FIX */
+html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    background: #e2e2e2;
+}
+
+body {
+    background: #ffffff;
     font-family: Arial, sans-serif;
 }
 
+/* FULL SCREEN CONTAINER */
 .container {
-    width: 900px;
-    height: 530px;
+    width: 100%;
+    height: 100vh; /* full screen */
     background: linear-gradient(180deg, #ffffff, #878787);
-    margin: 40px auto;
-    border-radius: 15px;
     display: flex;
     overflow: hidden;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
 }
 
 /* LEFT SIDE */
 .left-side {
     width: 45%;
+    height: 100vh;
     background: linear-gradient(180deg, #51218F, #8A38F5);
     padding: 40px;
     color: white;
-    border-radius: 15px;
     text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .logo {
@@ -35,62 +42,62 @@ body {
 }
 
 .left-side h1 {
-    margin-top: 120px;
     font-size: 45px;
-    font-weight: 900;
-    font-style: italic;
-    filter: drop-shadow( 20px -15px rgba(66, 66, 66, 0.308));
-}
-
-.left-side h1 span {
     font-weight: 900;
     font-style: italic;
 }
 
 .left-side p {
-    margin-top: 5px;
+    margin-top: 10px;
     opacity: 0.9;
     font-size: 15px;
 }
 
 .login-btn {
-    margin-top: 25px;
-    padding: 10px 100px;
+    width: 40%;
+    padding: 10px; 
     background: transparent;
     border: 2px solid white;
     border-radius: 30px;
     color: white;
     cursor: pointer;
     font-size: 16px;
-}
-.login-btn a{
-    color: white;
-    text-decoration: none;
+    margin: 20px auto 0 auto; 
+    display: block;
+    text-align: center;
 }
 
+.login-btn a {
+    text-decoration: none;
+    color: white;
+}
 .login-btn:hover {
+    opacity: 0.8;
     background: black;
-    color: #ffffff;
-    border: 2px solid black;
+    border: black;
 }
 
 /* RIGHT SIDE */
 .right-side {
     width: 55%;
+    height: 100vh;
     padding: 40px 50px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .right-side h2 {
-    font-size: 35px;
-    font-weight: 800;
+    font-size: 37px;
+    font-weight:900;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     gap: 15px;
+    margin-top: 20px;
 }
 
 .form input {
@@ -105,17 +112,17 @@ body {
     padding: 12px;
     background: black;
     color: white;
-    border: none;
     border-radius: 20px;
+    border: none;
+    margin-top: 10px;
     font-size: 16px;
-    margin-top: 12px;
-    display: block;
     margin-left: auto;
     margin-right: auto;
 }
-.signup-btn a{
- color: #ffffff;
- text-decoration: none;
+
+.signup-btn a {
+    color: white;
+    text-decoration: none;
 }
 
 .signup-btn:hover {
@@ -125,19 +132,85 @@ body {
 
 .divider {
     margin: 20px 0;
-    text-align: center;
     font-size: 14px;
     color: rgb(60,60,60);
 }
 
-.socials {
+/* --- SOCIAL LOGIN BUTTONS (UPDATED) --- */
+
+.social-login {
     display: flex;
-    gap: 20px;
     justify-content: center;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 15px;
 }
 
-.socials img {
-    width: 35px;
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 5px 16px;
+    background: white;
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 14px;
+    transition: 0.25s ease;
+}
+
+.social-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+@media (max-width: 500px) {
+    .social-login {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .social-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+.social-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+.fb-btn { border-color: #1877F2; }
+.google-btn { border-color: #DB4437; }
+
+.social-btn:hover {
+    background: #f2f2f2;
+}
+
+
+
+@media (max-width: 1050px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .container {
+        max-width: unset !important;
+        width: 100% !important;
+        height: 100% !important;
+        flex-direction: column !important;
+    }
+
+    .left-side,
+    .right-side {
+        width: auto !important;
+        height: auto !important;
+    }
+}
+
+@media (max-width: 492px) {
+    .fb-logo, .google-logo {
+        margin-top: -20px;
+    }
 }

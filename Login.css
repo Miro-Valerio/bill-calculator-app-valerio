@@ -1,24 +1,20 @@
-* {
+
+html, body {
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
 
+
 body {
     background: #c4c3c3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
 .container {
-    width: 90%;
-    max-width: 900px;
-    height: 500px;
-    background: white;
-    border-radius: 15px;
+    width: 100%;
+    height: 100vh; 
     display: flex;
     overflow: hidden;
 }
@@ -26,127 +22,233 @@ body {
 /* LEFT SIDE */
 .left {
     width: 50%;
+    height: 100%;
     background: linear-gradient(to bottom right, #f1f1f1, #cfcfcf);
-    padding: 40px;
+    padding: 40px 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .left h1 {
-    font-size: 40px;
-    font-weight: 700;
+    font-size: 60px;
     margin-bottom: 30px;
     text-align: center;
-}
-
-.left label {
-    font-size: 14px;
-    font-weight: 500;
+    font-weight: 900;
 }
 
 .left input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 18px;
+    width: 92%;
+    padding: 15px;
+    margin: 28PX 0 18px;
     border-radius: 6px;
     border: 1px solid black;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .forgot {
-    margin-top: 3px;
-    font-size: 13px;
-    text-decoration: none;
+    font-size: 14px;
     color: black;
-    margin-bottom: 10px;
-    display: block; 
+    margin-bottom: 15px;
+    display: block;
 }
+
 
 .login-btn {
     width: 70%;
-    padding: 10px 50px;
+    padding: 12px;
     background: black;
     color: white;
     border: none;
     font-size: 16px;
-    margin: 20px auto;
     border-radius: 30px;
     cursor: pointer;
-    margin-left: 50px;
+    display: block;
+    margin: 20px auto 0 auto;
+    text-align: center;
+    text-decoration: none;
 }
 
 .login-btn:hover {
     background: linear-gradient(180deg, #51218F, #8A38F5);
 }
-.divider {
+
+.login-with {
     text-align: center;
-    margin-top: 15px;
-    font-size: 13px;
-    color: #1e1e1e;
-}
-
-.divider span {
-    width: 60px;
-    height: 1px;
-    margin: 0 5px;
-}
-
-.social-icons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
+    font-size: 14px;
     margin-top: 10px;
 }
 
-.social-icons img {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    border-radius: 50%;
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
 }
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.social-btn img {
+    width: 22px;
+    height: 22px;
+}
+
+.fb-btn { border-color: #1877F2; }
+.google-btn { border-color: #DB4437; }
+
+.social-btn:hover {
+    background: #f2f2f2;
+}
+
 
 /* RIGHT SIDE */
 .right {
     width: 50%;
+    height: 100%;
     background: linear-gradient(to bottom right, #8029dd, #51218F);
     color: white;
-    text-align: center;
-    padding: 50px 30px;
+    padding: 30px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    text-align: center;
 }
 
 .logo {
     width: 150px;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 25px;
+    right: 25px;
 }
 
 .right h2 {
     font-size: 45px;
-    margin-top: 80px;
     font-style: italic;
-    filter: drop-shadow( 20px -15px rgba(66, 66, 66, 0.308));
+    margin: 0;
+    font-weight: 900;
 }
 
 .welcome {
     font-size: 45px;
-    font-weight: 700;
+    font-weight: bold;
     font-style: italic;
-    filter: drop-shadow( 20px -15px rgba(66, 66, 66, 0.308));
+    margin: 10px 0 5px 0;
+    font-weight: 900;
+}
+
+.right p {
+    font-size: 16px;
+    margin-top: 5px;
 }
 
 .signup-btn {
     margin-top: 20px;
-    padding: 8px 50px;
+    padding: 10px 60px;
     background: transparent;
     border: 2px solid white;
     color: white;
     border-radius: 30px;
-    cursor: pointer;
     font-size: 16px;
+    cursor: pointer;
 }
 
 .signup-btn:hover {
     background: black;
-    color: #ffffff;
-    border: 2px solid black;
+    border-color: black;
+}
+
+
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column-reverse;
+        height: auto;
+    }
+
+    .left, .right {
+        width: 100%;
+        height: auto;
+        padding: 72px 30px;
+    }
+
+    .right h2,
+    .welcome {
+        margin-top: 40px;
+        font-size: 35px;
+    }
+
+    .login-btn {
+        width: 85%;
+        
+    }
+}
+
+
+@media (max-width: 492px) {
+    .left input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .login-btn {
+        width: 90%;
+        padding: 12px;
+    }
+
+    .social-login {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .social-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .right p{
+        font-size: 16px; 
+        margin-top: 5px;
+        margin-right: 52px;
+
+
+    }
+    .right h2{
+        font-size: 28px; 
+        text-align: center;
+        margin-right: 52px;
+
+    }
+    .right .welcome{
+        font-size: 28px; 
+        text-align: center;
+        margin: 10px;
+        margin-right: 52px;
+
+    }
+
+    .signup-btn {
+        display: block; 
+        margin: 15px auto;
+        text-align: center;
+        margin-right: 52px;
+    }
+
+    .logo {
+        width: 100px;
+        right: 70px;
+    }
 }

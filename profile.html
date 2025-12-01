@@ -8,101 +8,104 @@
 </head>
 <body>
 
-<div class="container">
+<div class="app">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
+      
+      <nav class="nav-menu">
         <ul>
-           <li><a href="profile.html">👤 Profile</a></li>
-        <li><a href="dashboard.html">📊 Dashboard</a></li>
-        <li><a href="calculator.html">🧮 Calculator</a></li>
-        <li><a href="history.html">📜 History</a></li>
-        <li><a href="logout.html">↪ Logout</a></li>
+          <li class="active"><a href="profile.html">👤 Profile</a></li>
+          <li><a href="dashboard.html">🔲 Dashboard</a></li>
+          <li><a href="calculator.html">🧮 Calculator</a></li>
+          <li><a href="history.html">⏳ History</a></li>
+          <li><a href="index.html">↪ Logout</a></li>
         </ul>
+      </nav>
 
-        <div class="logo">
-            <img src="logo.png" alt="Logo">
-        </div>
+      <div class="sidebar-logo">
+        <img src="image/logo.png" alt="WattWise Logo">
+      </div>
+
     </aside>
 
     <!-- MAIN CONTENT -->
     <main class="main">
 
-        <div class="top-bar">
-            <h1>My Profile</h1>
-            <a href="Dashboard.html" class="back-btn">Back</a>
+        <!-- Header -->
+        <div class="header">
+            <h2>My Profile</h2>
+            <a href="dashboard.html" class="back-btn">Back</a>
         </div>
 
-        <div class="profile-section">
+        <!-- PROFILE LAYOUT (2 Cards Side by Side) -->
+        <div class="profile-layout">
 
-            <!-- LEFT PROFILE CARD -->
+            <!-- LEFT: Editable Profile Card -->
             <div class="profile-card">
-                <div class="image-box">
-                    <img src="profile.png" alt="Profile">
-                </div>
+                <img src="image/profile.png" class="avatar" alt="User">
 
-                <h2 class="name">Miro Millan</h2>
-                <p class="status">Your Profile 90% Complete</p>
+                <h2 class="user-name">Miro Millan</h2>
 
-                <a href="#" class="edit-btn">Edit Profile</a>
+                <a href="#" class="edit-profile">Edit Profile</a>
 
+                <label>Username</label>
                 <div class="input-group">
-                    <label>Username</label>
                     <input type="text" value="Miro Millan">
+                    <button>➜</button>
                 </div>
 
+                <label>Email Address</label>
                 <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="text" value="miromillan11@gmail.com">
+                    <input type="text" value="miromillan111@gmail.com">
+                    <button>➜</button>
                 </div>
 
+                <label>Contact Number</label>
                 <div class="input-group">
-                    <label>Contact Number</label>
-                    <input type="text" value="09953369084">
+                    <input type="text" value="09953969084">
+                    <button>➜</button>
+                </div>
+
+                <label>Change Password</label>
+                <div class="input-group">
+                    <input type="password" value="*******">
+                    <button>➜</button>
                 </div>
             </div>
 
-            <!-- RIGHT SIDE BOXES -->
-            <div class="right-section">
+            <!-- RIGHT: Display-Only Info Card -->
+            <div class="info-card">
+                <h3>Account Information</h3>
 
-                <!-- PASSWORD & SECURITY -->
-                <div class="security-box">
-                    <h3>Password and Security</h3>
-
-                    <button>Change Password ➜</button>
-                    <button>Where You’re Logged In ➜</button>
-                    <button>Add Recovery Email ➜</button>
+                <div class="info-row">
+                    <span>Address:</span>
+                    <span>Kauswagan LDN</span>
                 </div>
 
-                <!-- ACCOUNT INFORMATION -->
-                <div class="account-info">
-                    <h3>Account Information</h3>
-
-                    <div class="info-row">
-                        <span>Last Login</span>
-                        <span>Jun 19, 2025</span>
-                    </div>
-
-                    <div class="info-row">
-                        <span>Birthday</span>
-                        <span>May 14, 2005</span>
-                    </div>
-
-                    <div class="info-row">
-                        <span>Contact Info</span>
-                        <span>09953369084</span>
-                    </div>
-
-                    <div class="info-row">
-                        <span>Gender</span>
-                        <span>Male</span>
-                    </div>
-
+                <div class="info-row">
+                    <span>Last Login:</span>
+                    <span>Jun 19, 2025</span>
                 </div>
 
+                <div class="info-row">
+                    <span>Birthday:</span>
+                    <span>May 14, 2005</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Contact Info:</span>
+                    <span>09953969084</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Gender:</span>
+                    <span>Male</span>
+                </div>
             </div>
 
         </div>
+
     </main>
 
 </div>

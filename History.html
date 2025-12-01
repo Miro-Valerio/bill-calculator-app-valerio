@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill History</title>
+    <link rel="stylesheet" href="history.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HAMBURGER ICON (mobile only) -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <nav class="nav-menu">
+            <ul>
+              <li><a href="profile.html">👤 Profile</a></li>
+              <li><a href="dashboard.html">🔲 Dashboard</a></li>
+              <li><a href="calculator.html">🧮 Calculator</a></li>
+              <li class="active"><a href="history.html">⏳ History</a></li>
+              <li><a href="index.html">↪ Logout</a></li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-logo">
+            <img src="image/logo.png" alt="WattWise Logo">
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+        <div class="header"></div>
+
+        <section class="card">
+            <h1>Electricity Bill History</h1>
+
+            <div class="summary">
+                <h2>Summary Totals</h2>
+                <p><strong>Highest Bill Spent:</strong> <span class="highlight">(Sept, 2025) — ₱2,250.00</span></p>
+            </div>
+
+            <div class="record-header">
+                <h3>Record History</h3>
+                <select class="month-select">
+                    <option selected disabled>Months</option>
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month/Date/Yr</th>
+                        <th>Power Consumption</th>
+                        <th>Cost Per (kWh)</th>
+                        <th>Total Bill</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Oct/1/2025</td>
+                        <td>185 kWh</td>
+                        <td>₱10.00</td>
+                        <td>₱1,850.00</td>
+                        <td><a class="delete">Delete</a></td>
+                    </tr>
+
+                    <tr>
+                        <td>Sept/15/2025</td>
+                        <td>180 kWh</td>
+                        <td>₱12.50</td>
+                        <td>₱2,250.00</td>
+                        <td><a class="delete">Delete</a></td>
+                    </tr>
+
+                    <tr>
+                        <td>Aug/5/2025</td>
+                        <td>192 kWh</td>
+                        <td>₱10.00</td>
+                        <td>₱1,920.00</td>
+                        <td><a class="delete">Delete</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+</div>
+
+<script>
+    function toggleMenu() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.classList.toggle("show");
+    }
+</script>
+
+</body>
+</html>
