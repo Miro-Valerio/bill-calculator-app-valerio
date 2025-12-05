@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>WattWise — Dashboard</title>
   <link rel="stylesheet" href="dashboard.css" />
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
 </head>
 
 <body>
@@ -25,7 +29,7 @@
           <li class="active"><a href="dashboard.html">🔲 Dashboard</a></li>
           <li><a href="calculator.html">🧮 Calculator</a></li>
           <li><a href="history.html">⏳ History</a></li>
-          <li><a href="index.html">↪ Logout</a></li>
+          <li><a href="#" onclick="handleLogout(); return false;">↪ Logout</a></li>
         </ul>
       </nav>
 
@@ -58,8 +62,8 @@
       <section class="top-section">
         <div class="card last-calc">
           <p>Your last calculation</p>
-          <h2>₱ 1,850.00</h2>
-          <span>October (2025)</span>
+          <h2 id="last_calc_amount">₱ 0.00</h2>
+          <span id="last_calc_month">No calculations yet</span>
           <a href="calculator.html"><button class="calculate-btn">Calculate</button></a>
         </div>
 
@@ -83,32 +87,141 @@
               <th>Total Bill</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Oct</td>
-              <td>185</td>
-              <td>₱ 10</td>
-              <td>₱ 1,850.00</td>
-            </tr>
-            <tr>
-              <td>Sept</td>
-              <td>180</td>
-              <td>₱ 12.50</td>
-              <td>₱ 2,250.00</td>
-            </tr>
+          <tbody id="calculations_tbody">
           </tbody>
         </table>
-        <a href="History.html" class="view-history">View History</a>
+        <a href="history.html" class="view-history">View History</a>
       </section>
 
     </main>
   </div>
 
-  <!-- SIDEBAR TOGGLE SCRIPT -->
+  <!-- FULL JAVASCRIPT -->
   <script>
+    // Sidebar toggle
     function toggleMenu() {
       const sidebar = document.querySelector(".sidebar");
       sidebar.classList.toggle("show");
+    }
+
+    // Load calculations from Supabase on page load
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (window.requireAuth) {
+        if (!await window.requireAuth()) return; // will redirect to Login if not authenticated
+      }
+      const welcomeText = document.querySelector(".welcome-title");
+      const userName = "Miro";
+      if (welcomeText) {
+        welcomeText.innerHTML = `Welcome back, <strong>${userName}!</strong>`;
+      }
+
+      // Wait for Supabase to initialize
+      await new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+          if (window.supabaseClient) {
+            clearInterval(checkInterval);
+            resolve();
+          }
+        }, 100);
+        setTimeout(() => { clearInterval(checkInterval); resolve(); }, 5000);
+      });
+
+      // Fetch and display calculations
+      await loadCalculations();
+    });
+
+    async function loadCalculations() {
+      try {
+        if (typeof supabaseClient === 'undefined' || !supabaseClient) {
+          console.warn("Supabase not available");
+          loadCalculationsLocally();
+          return;
+        }
+
+        const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+        if (userError || !user) {
+          console.warn("User not authenticated");
+          loadCalculationsLocally();
+          return;
+        }
+
+        // Fetch calculations from Supabase, ordered by newest first
+        const { data, error } = await supabaseClient
+          .from("calculations")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("Error fetching calculations:", error);
+          loadCalculationsLocally();
+          return;
+        }
+
+        if (data && data.length > 0) {
+          // Display last calculation
+          const lastCalc = data[0];
+          document.getElementById("last_calc_amount").textContent = "₱ " + parseFloat(lastCalc.result).toFixed(2);
+          document.getElementById("last_calc_month").textContent = lastCalc.month + " (2025)";
+
+          // Display previous calculations in table (limit to 5)
+          const tbody = document.getElementById("calculations_tbody");
+          tbody.innerHTML = "";
+          data.slice(0, 5).forEach(calc => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${calc.month}</td>
+              <td>${parseFloat(calc.power_consumption).toFixed(2)}</td>
+              <td>₱ ${parseFloat(calc.cost_per_kwh).toFixed(2)}</td>
+              <td>₱ ${parseFloat(calc.result).toFixed(2)}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          // No calculations found
+          const tbody = document.getElementById("calculations_tbody");
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No calculations yet. Go to Calculator to create one.</td></tr>';
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        loadCalculationsLocally();
+      }
+    }
+
+    function loadCalculationsLocally() {
+      const calculations = JSON.parse(localStorage.getItem("calculations") || "[]");
+      
+      if (calculations.length > 0) {
+        const lastCalc = calculations[calculations.length - 1];
+        document.getElementById("last_calc_amount").textContent = "₱ " + parseFloat(lastCalc.result).toFixed(2);
+        document.getElementById("last_calc_month").textContent = lastCalc.month + " (2025)";
+
+        const tbody = document.getElementById("calculations_tbody");
+        tbody.innerHTML = "";
+        calculations.slice().reverse().slice(0, 5).forEach(calc => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${calc.month}</td>
+            <td>${parseFloat(calc.power_consumption).toFixed(2)}</td>
+            <td>₱ ${parseFloat(calc.cost_per_kwh).toFixed(2)}</td>
+            <td>₱ ${parseFloat(calc.result).toFixed(2)}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } else {
+        const tbody = document.getElementById("calculations_tbody");
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No calculations yet. Go to Calculator to create one.</td></tr>';
+      }
+    }
+
+    // Logout with confirmation
+    function handleLogout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+
+      if (confirmLogout) {
+        localStorage.clear(); // clear storage (optional)
+        window.location.href = "index.html"; // redirect to home/login
+      }
     }
   </script>
 

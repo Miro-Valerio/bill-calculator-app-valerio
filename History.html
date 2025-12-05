@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Electricity Bill History</title>
     <link rel="stylesheet" href="history.css">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
 
@@ -25,7 +29,7 @@
               <li><a href="dashboard.html">🔲 Dashboard</a></li>
               <li><a href="calculator.html">🧮 Calculator</a></li>
               <li class="active"><a href="history.html">⏳ History</a></li>
-              <li><a href="index.html">↪ Logout</a></li>
+              <li><a href="#" onclick="handleLogout(); return false;">↪ Logout</a></li>
             </ul>
         </nav>
 
@@ -43,32 +47,32 @@
 
             <div class="summary">
                 <h2>Summary Totals</h2>
-                <p><strong>Highest Bill Spent:</strong> <span class="highlight">(Sept, 2025) — ₱2,250.00</span></p>
+                <p><strong>Highest Bill Spent:</strong> <span class="highlight" id="highest_bill">(No data yet)</span></p>
             </div>
 
             <div class="record-header">
                 <h3>Record History</h3>
-                <select class="month-select">
-                    <option selected disabled>Months</option>
-                    <option>January</option>
-                    <option>February</option>
-                    <option>March</option>
-                    <option>April</option>
-                    <option>May</option>
-                    <option>June</option>
-                    <option>July</option>
-                    <option>August</option>
-                    <option>September</option>
-                    <option>October</option>
-                    <option>November</option>
-                    <option>December</option>
+                <select class="month-select" id="month_filter">
+                    <option selected value="">All Months</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
                 </select>
             </div>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Month/Date/Yr</th>
+                        <th>Month</th>
                         <th>Power Consumption</th>
                         <th>Cost Per (kWh)</th>
                         <th>Total Bill</th>
@@ -76,30 +80,7 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr>
-                        <td>Oct/1/2025</td>
-                        <td>185 kWh</td>
-                        <td>₱10.00</td>
-                        <td>₱1,850.00</td>
-                        <td><a class="delete">Delete</a></td>
-                    </tr>
-
-                    <tr>
-                        <td>Sept/15/2025</td>
-                        <td>180 kWh</td>
-                        <td>₱12.50</td>
-                        <td>₱2,250.00</td>
-                        <td><a class="delete">Delete</a></td>
-                    </tr>
-
-                    <tr>
-                        <td>Aug/5/2025</td>
-                        <td>192 kWh</td>
-                        <td>₱10.00</td>
-                        <td>₱1,920.00</td>
-                        <td><a class="delete">Delete</a></td>
-                    </tr>
+                <tbody id="history_tbody">
                 </tbody>
             </table>
         </section>
@@ -108,10 +89,200 @@
 </div>
 
 <script>
-    function toggleMenu() {
-        const sidebar = document.querySelector(".sidebar");
-        sidebar.classList.toggle("show");
+let allCalculations = [];
+
+const toggleMenu = () => document.querySelector(".sidebar").classList.toggle("show");
+const isSupabaseReady = () => typeof supabaseClient !== 'undefined' && supabaseClient;
+const getUser = async () => {
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    return error ? null : user;
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+    if (window.requireAuth) {
+        if (!await window.requireAuth()) return; // redirect to Login if not authenticated
     }
+    await new Promise(r => {
+        const i = setInterval(() => { if (isSupabaseReady()) { clearInterval(i); r(); } }, 100);
+        setTimeout(() => { clearInterval(i); r(); }, 5000);
+    });
+    await loadCalculations();
+    document.getElementById("month_filter").addEventListener("change", filterByMonth);
+});
+
+async function loadCalculations() {
+    const user = await getUser();
+    if (!user) {
+        loadCalculationsLocally();
+        return;
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('calculations')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error loading:', error);
+            loadCalculationsLocally();
+            return;
+        }
+
+        allCalculations = data && data.length > 0 ? data : [];
+        displayTable(allCalculations);
+        updateHighestBill(allCalculations);
+    } catch (error) {
+        console.error('Error:', error);
+        loadCalculationsLocally();
+    }
+}
+
+function loadCalculationsLocally() {
+    const calcs = JSON.parse(localStorage.getItem("calculations") || "[]");
+    allCalculations = calcs.length > 0 ? calcs.slice().reverse() : [];
+    displayTable(allCalculations);
+    updateHighestBill(allCalculations);
+}
+
+function displayTable(data) {
+    const tbody = document.getElementById("history_tbody");
+    tbody.innerHTML = '';
+
+    if (data.length === 0) {
+        const row = tbody.insertRow();
+        row.className = 'empty-row';
+        const cell = row.insertCell(0);
+        cell.colSpan = 5;
+        cell.className = 'empty-message';
+        cell.innerHTML = 'No calculations found.';
+        return;
+    }
+
+    data.forEach(calc => {
+        const row = tbody.insertRow();
+        const dateStr = formatDate(calc);
+        const powerConsumption = parseFloat(calc.power_consumption).toFixed(2);
+        const costPerKwh = "₱ " + parseFloat(calc.cost_per_kwh).toFixed(2);
+        const result = "₱ " + parseFloat(calc.result).toFixed(2);
+
+        row.insertCell(0).innerHTML = dateStr;
+        row.insertCell(1).innerHTML = powerConsumption + " kWh";
+        row.insertCell(2).innerHTML = costPerKwh;
+        row.insertCell(3).innerHTML = result;
+        
+        const deleteCell = row.insertCell(4);
+        deleteCell.innerHTML = '<button class="delete-btn">Delete</button>';
+        deleteCell.querySelector(".delete-btn").onclick = () => deleteCalculation(calc.id, calc.month);
+    });
+}
+
+function filterByMonth() {
+    const month = document.getElementById("month_filter").value;
+    const filtered = month === "" ? allCalculations : allCalculations.filter(c => c.month === month);
+    displayTable(filtered);
+    updateHighestBill(filtered);
+}
+
+function updateHighestBill(data) {
+    const el = document.getElementById("highest_bill");
+    if (data.length === 0) {
+        el.textContent = "(No data yet)";
+        return;
+    }
+    const highest = data.reduce((max, c) => parseFloat(c.result) > parseFloat(max.result) ? c : max);
+    // Show only the month the user entered (no automatic year)
+    el.textContent = `${highest.month} — ₱ ${parseFloat(highest.result).toFixed(2)}`;
+}
+
+function formatDate(calc) {
+    // Display the month exactly as entered by the user
+    return calc && calc.month ? calc.month : '';
+}
+
+async function deleteCalculation(id, month) {
+    if (!confirm(`Delete calculation for ${month}?`)) return;
+
+    // Helper: remove from localStorage fallback
+    const deleteLocally = () => {
+        try {
+            const stored = JSON.parse(localStorage.getItem('calculations') || '[]');
+            const filtered = stored.filter(c => {
+                if (!id) {
+                    // if no id, match by month + result (best-effort)
+                    return !(c.month === month);
+                }
+                return String(c.id) !== String(id);
+            });
+            localStorage.setItem('calculations', JSON.stringify(filtered));
+            console.log('Deleted locally from fallback storage');
+        } catch (e) { console.warn('Local delete failed', e); }
+    };
+
+    try {
+        if (!isSupabaseReady()) {
+            // If Supabase client isn't available, fall back to local delete
+            deleteLocally();
+            await loadCalculations();
+            window.dispatchEvent(new Event('calculationDeleted'));
+            alert('Deleted locally (offline mode)');
+            return;
+        }
+
+        const user = await getUser();
+        if (!user) {
+            // If not authenticated, fallback to local delete
+            deleteLocally();
+            await loadCalculations();
+            window.dispatchEvent(new Event('calculationDeleted'));
+            alert('Deleted locally (not authenticated)');
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from('calculations')
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+
+        if (error) {
+            console.error('Delete error:', error);
+            // If Supabase complains about schema cache or table missing, fall back to local deletion
+            const msg = (error.message || '').toLowerCase();
+            if (msg.includes('schema') || msg.includes('could not find') || msg.includes('table')) {
+                deleteLocally();
+                await loadCalculations();
+                window.dispatchEvent(new Event('calculationDeleted'));
+                alert('Deleted locally (server schema unavailable)');
+                return;
+            }
+
+            alert('Error deleting calculation: ' + (error.message || JSON.stringify(error)));
+            return;
+        }
+
+        // Success on server
+        console.log('Calculation deleted successfully (server)');
+        await loadCalculations();
+        window.dispatchEvent(new Event('calculationDeleted'));
+    } catch (error) {
+        console.error('Error:', error);
+        // On unexpected errors, attempt local delete so user can still remove the row
+        deleteLocally();
+        await loadCalculations();
+        window.dispatchEvent(new Event('calculationDeleted'));
+        alert('Deleted locally due to error: ' + (error.message || error));
+    }
+}
+
+function handleLogout() {
+    if (confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem('pendingCalculation');
+        localStorage.clear();
+        window.location.href = "index.html";
+    }
+}
 </script>
 
 </body>

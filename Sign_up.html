@@ -26,32 +26,78 @@
     <div class="right-side">
         <h2>Create Account</h2>
 
-        <form class="form">
-            <input type="text" placeholder="Create Username">
-            <input type="email" placeholder="Email Address:">
-            <input type="text" placeholder="Contact Number:">
-            <input type="password" placeholder="Create Password:">
+        <!-- FIXED FORM -->
+        <form onsubmit="event.preventDefault(); handleRegister();" class="form">
 
-            <button class="signup-btn">
-                <a href="Login.html">Sign Up</a>
-            </button>
+            <input type="text" id="reg_username" placeholder="Create Username">
+            <input type="email" id="reg_email" placeholder="Email Address:">
+            <input type="text" id="reg_contact" placeholder="Contact Number:">
+            <input type="password" id="reg_password" placeholder="Create Password">
+
+            <button type="submit" class="signup-btn">Sign Up</button>
         </form>
 
-        <div class="divider">or sign up with</div>
-
-       <div class="social-login">
-    <button class="social-btn fb-btn">
-        <img src="image/fb.png" alt="Facebook">
-         Facebook
-    </button>
-
-    <button class="social-btn google-btn">
-        <img src="image/google (1).png" alt="Google">
-        with Google
-    </button>
-</div>
+    </div>
 
 </div>
+
+<!-- Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const session = await checkAuth();
+        if (session) window.location.href = 'dashboard.html';
+    });
+
+    async function handleRegister() {
+        const username = document.getElementById('reg_username').value;
+        const email = document.getElementById('reg_email').value;
+        const contact = document.getElementById('reg_contact').value;
+        const password = document.getElementById('reg_password').value;
+
+        if (!username || !email || !contact || !password) {
+            alert('Please fill in all fields!');
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('Password must be at least 6 characters!');
+            return;
+        }
+
+        const btn = document.querySelector('.signup-btn');
+        btn.disabled = true;
+        btn.textContent = 'Registering...';
+        console.debug('Signing up user', { username, email, contact });
+
+        try {
+            const { error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { full_name: username, phone: contact } }
+            });
+
+            if (error) {
+                console.error('signUp error', error);
+                alert('Registration failed: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = 'Sign Up';
+                return;
+            }
+
+            // Registration completed. Supabase will send a confirmation email if required by your project settings.
+            // Do not auto sign-in; redirect to Login so the user can confirm via email and then sign in.
+            alert('Registration successful! Check your email for a confirmation link (if required), then log in.');
+            window.location.href = 'Login.html';
+        } catch (err) {
+            alert('Error: ' + err.message);
+            btn.disabled = false;
+            btn.textContent = 'Sign Up';
+        }
+    }
+</script>
 
 </body>
 </html>
