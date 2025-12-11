@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins, sans-serif;
+}
+
+body {
+    background: #f1f1f1;
+    overflow-y: auto;
+}
+
+.app {
+    display: flex;
+}
+
+/* HAMBURGER*/
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 12px;
+    background: #1c1c1c;
+    border-radius: 8px;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+}
+
+.hamburger span {
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: #1c1c1c;
+    color: white;
+    width: 230px;
+    min-height: 100vh;
+    padding: 25px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+.nav-menu ul {
+    list-style: none;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    font-size: 18px;
+    padding: 20px;
+}
+
+.nav-menu ul li {
+    padding: 20px 25px;
+    cursor: pointer;
+}
+
+.nav-menu ul li:hover,
+.nav-menu ul li.active {
+    background: #333;
+}
+
+/* Logo Section */
+.sidebar-logo {
+    margin: 20px auto;
+    width: 150px;
+}
+
+.sidebar-logo img {
+    width: 100%;
+    display: block;
+}
+
+/* MAIN AREA */
+.main {
+    flex: 1;
+}
+
+/* Gradient Header */
+.header {
+    width: 100%;
+    padding: 100px 0;
+    text-align: center;
+    color: white;
+    background: linear-gradient(90deg, #8A38F5 0%, #51218F);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Calculator Box */
+.calc-box {
+    width: 550px;
+    margin: -60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+}
+
+.calc-box label {
+    font-weight: 600;
+    margin-top: 15px;
+    display: block;
+    color: #333;
+}
+
+.calc-box input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    font-size: 15px;
+}
+
+.calc-box input:focus {
+    border-color: #7b2ff7;
+    outline: none;
+}
+
+/* Buttons Row */
+.btn-row {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calc-btn {
+    padding: 12px 32px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.calc-btn:hover {
+    background: #333;
+}
+
+.results-link {
+    color: #7b2ff7;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.results-link:hover {
+    text-decoration: underline;
+}
+
+/* RESPONSIVE — Tablet & Mobile */
+@media screen and (max-width: 1000px) {
+    .hamburger {
+        display: flex;
+        
+    }
+
+    .sidebar {
+        left: -100%;
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        transition: 0.3s ease-in-out;
+        height: 100%;
+    }
+
+    .sidebar.show {
+        left: 0;
+        z-index: 3;
+    }
+
+    .app {
+        justify-content: flex-start;
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 670px) {
+    .app {
+        flex-direction: column;
+    }
+
+    .header {
+        padding: 50px 0;
+        font-size: 18px;
+    }
+
+    .calc-box {
+        width: 90%;
+        margin: -40px auto;
+        padding: 22px;
+    }
+
+    .btn-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 430px) {
+    .header {
+        padding: 40px 0;
+        font-size: 16px;
+    }
+
+    .calc-box {
+        width: 92%;
+        padding: 18px;
+        margin-top: -30px;
+    }
+
+    .calc-box input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .calc-btn {
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 220px;
+    }
+}
