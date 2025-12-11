@@ -1,0 +1,273 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins, sans-serif;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #d8d8d8;
+}
+
+/* LAYOUT WRAPPER */
+.app {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    background: #1c1c1c;
+    color: white;
+    width: 230px;
+    height: 108vh;
+    padding: 25px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-menu ul {
+    list-style: none;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+}
+
+.nav-menu ul li {
+    padding: 20px 25px;
+    cursor: pointer;
+}
+
+.nav-menu ul li:hover,
+.nav-menu ul li.active {
+    background: #333;
+}
+
+.sidebar-logo {
+    margin: 20px auto;
+    width: 150px;
+}
+
+.sidebar-logo img {
+    width: 100%;
+    display: block;
+}
+
+/* MAIN AREA */
+.main {
+    flex: 1;
+    overflow-y: auto; 
+}
+
+/* HEADER */
+.header {
+    height: 10vh;
+    background: linear-gradient(90deg,#8A38F5 0%, #51218F);
+    padding: 20px 30px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    font-size: 40px;
+}
+
+.header a {
+    font-size: 28px;
+    text-decoration: none;
+    color: white;
+}
+
+/* PROFILE LAYOUT */
+.profile-layout {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    padding-bottom: 40px;
+    padding: 20px;
+}
+
+/* LEFT PROFILE CARD */
+.profile-card {
+    background: white;
+    width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+.avatar {
+    width: 110px;
+    border-radius: 50%;
+    background: linear-gradient(90deg,#8A38F5 0%, #51218F);
+}
+
+.user-name {
+    font-size: 35px;
+    margin-top: 10px;
+}
+
+.edit-profile {
+    color: #6a32ff;
+    text-decoration: none;
+    margin: 8px 0;
+    display: block;
+}
+
+label {
+    margin-top: 15px;
+    text-align: left;
+    display: block;
+}
+
+.input-group {
+    display: flex;
+    width: 100%;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px 0 0 8px;
+}
+
+
+.input-group button{
+    width: 45px;
+    border: 2px solid #ccc;
+    border-left: none;
+   
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    text-decoration: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    text-decoration: none;
+}
+
+
+/* RIGHT INFO CARD */
+.info-card {
+    background: white;
+    width: 400px;
+    padding: 25px;
+    margin: 20px;
+    margin-bottom: 20vh;
+    margin-top: 1px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+}
+
+.info-card h3 {
+    background: #d3d3d3;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.info-row span {
+    font-size: 15px;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .sidebar {
+        position: absolute;
+        left: -100%;
+        transition: all .2s ease-in;
+    }
+}
+
+
+@media screen and (max-width: 750px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .info-card {
+        margin-top: 30px;
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* CENTERED PROFILE FORM */
+.profile-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.profile-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1c1c1c;
+    font-size: 28px;
+}
+
+.profile-container form div {
+    margin-bottom: 20px;
+}
+
+.profile-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.profile-container input:focus {
+    outline: none;
+    border-color: #8A38F5;
+    box-shadow: 0 0 5px rgba(138, 56, 245, 0.3);
+}
+
+.profile-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.profile-container button[type="submit"]:hover {
+    background: #6d28d9;
+}

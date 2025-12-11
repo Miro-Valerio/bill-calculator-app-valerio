@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+    <link rel="stylesheet" href="calculator.css">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- HAMBURGER ICON -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="profile.html">👤 Profile</a></li>
+                <li><a href="dashboard.html">🔲 Dashboard</a></li>
+                <li class="active"><a href="calculator.html">🧮 Calculator</a></li>
+                <li><a href="history.html">⏳ History</a></li>
+                <li><a href="#" onclick="handleLogout(); return false;">↪ Logout</a></li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-logo">
+            <img src="image/logo.png" alt="WattWise Logo">
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <header class="header">
+            <h1>Electricity Bill Calculator</h1>
+        </header>
+        <div class="calc-box">
+            <form onsubmit="event.preventDefault();">
+            <label>Month:</label>
+            <input type="text" id="month" placeholder="Month">
+
+            <label>Power Consumption (kWh):</label>
+            <input type="number" id="power_consumption" step="0.01" placeholder="Enter kWh used">
+
+            <label>Cost per kWh (₱):</label>
+            <input type="number" id="cost_per_kwh" step="0.01" placeholder="Enter cost rate">
+
+            <label>Estimated Total Bill:</label>
+            <input type="text" id="result_display" readonly>
+         </form>
+            <div class="btn-row">
+                <button class="calc-btn" id="btn_calculate">Calculate</button>
+                <a href="History.html" class="results-link">View Results</a>
+         </div>
+        </div>
+        
+    </main>
+
+</div>
+
+<script>
+    const toggleMenu = () => document.querySelector(".sidebar").classList.toggle("show");
+
+    const isSupabaseReady = () => typeof supabaseClient !== 'undefined' && supabaseClient;
+
+    const getUser = async () => {
+        const { data: { user }, error } = await supabaseClient.auth.getUser();
+        return error ? null : user;
+    };
+
+    const saveLocal = (month, consumption, rate, total) => {
+        let calcs = JSON.parse(localStorage.getItem("calculations") || "[]");
+        const record = {
+            id: 'local-' + Date.now(),
+            month, power_consumption: consumption,
+            cost_per_kwh: rate, result: total,
+            created_at: new Date().toISOString()
+        };
+        calcs.push(record);
+        localStorage.setItem("calculations", JSON.stringify(calcs));
+        localStorage.setItem('pendingCalculation', JSON.stringify(record));
+        return record;
+    };
+
+    const saveToSupabase = async (month, consumption, rate, total) => {
+        if (!isSupabaseReady()) return saveLocal(month, consumption, rate, total);
+        const user = await getUser();
+        if (!user) return saveLocal(month, consumption, rate, total);
+
+        const { data, error } = await supabaseClient
+            .from("calculations")
+            .insert([{ user_id: user.id, month, power_consumption: consumption, cost_per_kwh: rate, result: total }])
+            .select();
+
+        if (error) {
+            console.error("Error saving:", error);
+            return saveLocal(month, consumption, rate, total);
+        }
+        const record = Array.isArray(data) ? data[0] : data;
+        localStorage.setItem('pendingCalculation', JSON.stringify(record));
+        return record;
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (window.requireAuth) {
+            if (!await window.requireAuth()) return; // redirect if not logged in
+        }
+        await new Promise(resolve => {
+            const interval = setInterval(() => { if (isSupabaseReady()) { clearInterval(interval); resolve(); } }, 100);
+            setTimeout(() => { clearInterval(interval); resolve(); }, 5000);
+        });
+    });
+
+    document.getElementById("btn_calculate").addEventListener("click", async function() {
+        const month = document.getElementById("month");
+        const power = document.getElementById("power_consumption");
+        const rate = document.getElementById("cost_per_kwh");
+        const result = document.getElementById("result_display");
+
+        if (!month.value || !power.value || !rate.value) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        const consumption = parseFloat(power.value);
+        const costRate = parseFloat(rate.value);
+        const total = costRate * consumption;
+
+        result.value = "₱ " + total.toFixed(2);
+        await saveToSupabase(month.value, consumption, costRate, total);
+
+        month.value = "";
+        power.value = "";
+        rate.value = "";
+    });
+
+    function handleLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem('pendingCalculation');
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+    }
+</script>
+
+</body>
+</html>
